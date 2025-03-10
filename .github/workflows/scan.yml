@@ -42,7 +42,10 @@ jobs:
       # Pull the github input image or use the default
       - name: Pull the image
         run: docker pull ${{ steps.set-image.outputs.IMAGE }}
-
+        
+      - name: Pull base image
+        run: docker pull ubuntu:22.04
+        
       - name: Docker Scout
         uses: docker/scout-action@v1
         with:
@@ -54,7 +57,6 @@ jobs:
           sarif-file: sca_scout.sarif
           output: sbom_scout.spdx.json
           format: spdx
-          base-image: ubuntu:22.04
 
       - name: Upload SBOM file as an artifact
         uses: actions/upload-artifact@v4
