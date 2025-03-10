@@ -30,9 +30,20 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+
+
+      - name: Set image to scan
+        id: set-image
+        run: |
+          if [ -n "${{ github.event.inputs.docker_image }}" ]; then
+            echo "IMAGE=${{ github.event.inputs.docker_image }}" >> $GITHUB_OUTPUT
+          else
+            echo "IMAGE=ubuntu:20.04" >> $GITHUB_OUTPUT
+          fi
+
       # Pull the github input image or use the default
       - name: Pull the image
-        run: docker pull ${{ github.event.inputs.docker_image }}
+        run: docker pull ${{ steps.set-image.outputs.IMAGE }}
 
       - name: Docker Scout
         uses: docker/scout-action@v1
