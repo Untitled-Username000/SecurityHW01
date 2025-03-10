@@ -1,12 +1,16 @@
 name: SBOM/SCA Scout
 
 on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
   workflow_dispatch:
     inputs:
-        docker_image:
-          description: 'The Docker image to scan'
-          required: true
-          default: 'ethan42/ncompress:vulnerable'
+      docker_image:
+        description: 'test scan'
+        required: true
+        default: 'ubuntu:20.04'
 
 jobs:
   scout:
@@ -64,3 +68,8 @@ jobs:
       - name: SBOM upload
         uses: advanced-security/spdx-dependency-submission-action@v0.1.1
 
+      - name: Upload success scan file
+        uses: actions/upload-artifact@v4
+        with:
+          name: successful_run.txt
+          path: successful_run.txt
