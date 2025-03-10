@@ -54,7 +54,7 @@ jobs:
           sarif-file: sca_scout.sarif
           output: sbom_scout.spdx.json
           format: spdx
-          base-image: ubuntu:24.04.2
+          base-image: ubuntu:22.04
 
       - name: Upload SBOM file as an artifact
         uses: actions/upload-artifact@v4
