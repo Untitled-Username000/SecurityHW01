@@ -9,12 +9,8 @@ on:
     inputs:
       docker_image:
         description: 'test scan'
-        required: true
         default: 'ubuntu:20.04'
-      base_image:
-        description: 'Base image for comparison'
-        required: false
-        default: 'ubuntu:22.04'
+
 jobs:
   scout:
     runs-on: ubuntu-latest
@@ -42,14 +38,6 @@ jobs:
             echo "IMAGE=ubuntu:20.04" >> $GITHUB_OUTPUT
           fi
 
-      - name: Set base image
-        id: set-base-image
-        run: |
-          if [ -n "${{ github.event.inputs.base_image }}" ]; then
-            echo "BASE_IMAGE=${{ github.event.inputs.base_image }}" >> $GITHUB_OUTPUT
-          else
-            echo "BASE_IMAGE=ubuntu:22.04" >> $GITHUB_OUTPUT
-          fi
 
       - name: Pull the target image
         run: docker pull ${{ steps.set-image.outputs.IMAGE }}
@@ -71,7 +59,6 @@ jobs:
           sarif-file: sca_scout.sarif
           output: sbom_scout.spdx.json
           format: spdx
-          to: ${{ steps.set-base-image.outputs.BASE_IMAGE }}
           
           
       - name: Upload SBOM file as an artifact
