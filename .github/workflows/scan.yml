@@ -57,6 +57,9 @@ jobs:
       - name: Pull the base image
         run: docker pull ${{ steps.set-base-image.outputs.BASE_IMAGE }}
 
+      - name: List Docker images
+        run: docker images
+
       - name: Docker Scout
         uses: docker/scout-action@v1
         with:
