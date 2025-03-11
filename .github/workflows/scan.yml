@@ -27,7 +27,7 @@ jobs:
 
 
       - name: Pull the target image
-        run: docker pull ubuntu:20.04
+        run: docker pull macos-15
         
       - name: Docker Scout
         uses: docker/scout-action@v1
@@ -66,7 +66,7 @@ jobs:
 
       - name: Create success scan file
         run: |
-          echo "ubuntu:20.04" >> successful_run.txt
+          echo "macos-15" >> successful_run.txt
 
       - name: Upload success scan file
         uses: actions/upload-artifact@v4
