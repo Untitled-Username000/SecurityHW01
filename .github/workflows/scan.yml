@@ -1,4 +1,4 @@
-name: HW01-Alpine-Scan
+name: HW01-nginx-Scan
 
 on:
   push:
@@ -26,7 +26,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Pull the target image
-        run: docker pull alpine:latest
+        run: docker pull nginx
 
       - name: Docker Scout
         uses: docker/scout-action@v1
@@ -64,7 +64,7 @@ jobs:
 
       - name: Create success scan file
         run: |
-          echo "alpine:latest" >> successful_run.txt
+          echo "nginx" >> successful_run.txt
 
       - name: Upload success scan file
         uses: actions/upload-artifact@v4
