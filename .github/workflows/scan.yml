@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:
-    inputs:
-      docker_image:
-        description: 'test scan'
-        default: 'ubuntu:20.04'
 
 jobs:
   scout:
@@ -29,29 +25,15 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Set image to scan
-        id: set-image
-        run: |
-          if [ -n "${{ github.event.inputs.docker_image }}" ]; then
-            echo "IMAGE=${{ github.event.inputs.docker_image }}" >> $GITHUB_OUTPUT
-          else
-            echo "IMAGE=ubuntu:20.04" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Set base image
-        id: set-base-image
-        run: |
-            echo "BASE_IMAGE=ubuntu:20.04" >> $GITHUB_OUTPUT
 
       - name: Pull the target image
         run: docker pull ${{ steps.set-image.outputs.IMAGE }}
-
 
       - name: Docker Scout
         uses: docker/scout-action@v1
         with:
           command: cves,recommendations,compare,sbom
-          image: ${{ steps.set-image.outputs.IMAGE }}
+          image: ubuntu:20.04
           only-severities: critical,high
           only-fixed: true
           exit-code: false
@@ -84,7 +66,7 @@ jobs:
 
       - name: Create success scan file
         run: |
-          echo "${{ steps.set-image.outputs.IMAGE }}" >> successful_run.txt
+          echo "ubuntu:20.04" >> successful_run.txt
 
       - name: Upload success scan file
         uses: actions/upload-artifact@v4
