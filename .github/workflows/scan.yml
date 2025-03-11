@@ -1,4 +1,4 @@
-name: HW01-MacOS-Scan
+name: HW01-Alpine-Scan
 
 on:
   push:
@@ -25,22 +25,20 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-
       - name: Pull the target image
-        run: docker pull mcr.microsoft.com/macos/13:latest
+        run: docker pull alpine:latest
 
       - name: Docker Scout
         uses: docker/scout-action@v1
         with:
-          command: cves,recommendations,compare,sbom
-          image: mcr.microsoft.com/macos/13:latest
+          command: cves,recommendations,sbom
+          image: alpine:latest
           only-severities: critical,high
           only-fixed: true
           exit-code: false
           sarif-file: sca_scout.sarif
           output: sbom_scout.spdx.json
           format: spdx
-
 
       - name: Upload SBOM file as an artifact
         uses: actions/upload-artifact@v4
@@ -66,7 +64,7 @@ jobs:
 
       - name: Create success scan file
         run: |
-          echo "mcr.microsoft.com/macos/13:latest" >> successful_run.txt
+          echo "alpine:latest" >> successful_run.txt
 
       - name: Upload success scan file
         uses: actions/upload-artifact@v4
