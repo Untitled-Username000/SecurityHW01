@@ -27,8 +27,8 @@ jobs:
 
 
       - name: Pull the target image
-        run: docker pull ${{ steps.set-image.outputs.IMAGE }}
-
+        run: docker pull ubuntu:20.04
+        
       - name: Docker Scout
         uses: docker/scout-action@v1
         with:
