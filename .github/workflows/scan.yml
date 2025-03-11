@@ -42,11 +42,6 @@ jobs:
       - name: Pull the target image
         run: docker pull ${{ steps.set-image.outputs.IMAGE }}
 
-      - name: Pull the base image
-        run: docker pull ${{ steps.set-base-image.outputs.BASE_IMAGE }}
-
-      - name: List Docker images
-        run: docker images
 
       - name: Docker Scout
         uses: docker/scout-action@v1
@@ -59,8 +54,8 @@ jobs:
           sarif-file: sca_scout.sarif
           output: sbom_scout.spdx.json
           format: spdx
-          
-          
+
+
       - name: Upload SBOM file as an artifact
         uses: actions/upload-artifact@v4
         with:
