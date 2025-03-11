@@ -1,4 +1,4 @@
-name: HW01-Ubuntu-Scan
+name: HW01-MacOS-Scan
 
 on:
   push:
@@ -27,13 +27,13 @@ jobs:
 
 
       - name: Pull the target image
-        run: docker pull macos-15
-        
+        run: docker pull mcr.microsoft.com/macos/13:latest
+
       - name: Docker Scout
         uses: docker/scout-action@v1
         with:
           command: cves,recommendations,compare,sbom
-          image: ubuntu:20.04
+          image: mcr.microsoft.com/macos/13:latest
           only-severities: critical,high
           only-fixed: true
           exit-code: false
@@ -66,7 +66,7 @@ jobs:
 
       - name: Create success scan file
         run: |
-          echo "macos-15" >> successful_run.txt
+          echo "mcr.microsoft.com/macos/13:latest" >> successful_run.txt
 
       - name: Upload success scan file
         uses: actions/upload-artifact@v4
